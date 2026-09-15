@@ -19,15 +19,8 @@ let ulEl = document.getElementById("ul-el");
 let deleteBtn = document.getElementById("delete-btn");
 let myLeads = []
 
-let leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
-
-if(leadsFromLocalStorage) {
-  myLeads = leadsFromLocalStorage;
-  renderLeads();
-}
 
 deleteBtn.addEventListener("dblclick", () => {
-  localStorage.clear();
   myLeads = [];
   renderLeads();
 })
@@ -35,9 +28,7 @@ deleteBtn.addEventListener("dblclick", () => {
 inputBtn.addEventListener("click", () => {
     myLeads.push(inputEl.value);
     inputEl.value = "";
-    localStorage.setItem("myLeads", JSON.stringify(myLeads));
     renderLeads();
-    console.log(localStorage.getItem("myLeads"));
 })
 
 const render = (leads) => {
