@@ -37,7 +37,7 @@ deleteBtn.addEventListener("dblclick", () => {
 inputBtn.addEventListener("click", () => {
     push(refLeads, inputEl.value);
     inputEl.value = "";
-    render(myLeads);
+    render(refLeads);
 })
 
 const render = (leads) => {
