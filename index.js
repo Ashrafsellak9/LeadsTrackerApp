@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js"
-import { getDatabase } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js"
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js"
 
 const firebaseConfig = {
   databaseURL: process.env.DATABASE_URL
@@ -8,10 +8,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-console.log(database);
-console.log(app)
-console.log(firebaseConfig.databaseURL)
-
+const refLeads = ref(database, "leads");
 
 let inputEl = document.getElementById("input-el");
 let inputBtn = document.getElementById("input-btn");
@@ -26,14 +23,14 @@ deleteBtn.addEventListener("dblclick", () => {
 })
 
 inputBtn.addEventListener("click", () => {
-    myLeads.push(inputEl.value);
+    push(refLeads, inputEl.value);
     inputEl.value = "";
     renderLeads();
 })
 
 const render = (leads) => {
     let listItems = "";
-    for(let i = 0; i < leads.length; i++) {
+    for(let i = 0; i < leads.length; i++) { 
         listItems += `
           <li>
             <a target="_blank" href="${leads[i]}">${leads[i]}</a>
