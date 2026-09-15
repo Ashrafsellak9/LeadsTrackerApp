@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js"
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js"
+import { getDatabase, ref, push, onValue, remove} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js"
 
 const firebaseConfig = {
   databaseURL: process.env.DATABASE_URL
@@ -10,6 +10,18 @@ const database = getDatabase(app);
 
 const refLeads = ref(database, "leads");
 
+ 
+onValue(refLeads, (snapshot) => {
+  const snapshotDoesExist = snapshot.exists();
+  if(snapshotDoesExist) {
+    const snapshotValues = snapshot.val();
+    const leads = Object.values(snapshotValues);
+    render(leads);
+  } else {
+    ulEl.innerHTML = "No leads yet";
+  }
+})
+
 let inputEl = document.getElementById("input-el");
 let inputBtn = document.getElementById("input-btn");
 let ulEl = document.getElementById("ul-el");
@@ -18,14 +30,14 @@ let myLeads = []
 
 
 deleteBtn.addEventListener("dblclick", () => {
-  myLeads = [];
-  renderLeads();
+  remove(refLeads);
+  ulEl.innerHTML = "No leads yet";
 })
 
 inputBtn.addEventListener("click", () => {
     push(refLeads, inputEl.value);
     inputEl.value = "";
-    renderLeads();
+    render(myLeads);
 })
 
 const render = (leads) => {
